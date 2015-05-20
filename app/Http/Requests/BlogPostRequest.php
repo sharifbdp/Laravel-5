@@ -1,6 +1,5 @@
 <?php namespace App\Http\Requests;
 
-use Response;
 use Illuminate\Foundation\Http\FormRequest;
 
 class BlogPostRequest extends FormRequest {
@@ -12,7 +11,7 @@ class BlogPostRequest extends FormRequest {
 	 */
 	public function authorize()
 	{
-		return false;
+		return true;
 	}
 
 	/**

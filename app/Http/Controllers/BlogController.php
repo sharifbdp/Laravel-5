@@ -1,6 +1,5 @@
 <?php namespace App\Http\Controllers;
 
-use Response;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\BlogPostRequest;
 use App\Blog;
@@ -45,34 +44,17 @@ class BlogController extends Controller {
 	 */
 	public function store(BlogPostRequest $request)
 	{       
-                return view('blog.create');
-                /*
-		// validate
-                $rules = array(
-                    'title' => 'required|max:255',
-                    'description' => 'required',
-                    'status' => 'required'
-                );
-                $validator = Validator::make(Input::all(), $rules);
-
-                // process the validation
-                if ($validator->fails()) {
-                    return Redirect::to('blog/create')
-                                    ->withErrors($validator)
-                                    ->withInput();
-                } else {
-                    // store
-                    $data = new Category;
-                    $data->title = Input::get('title');
-                    $data->description = Input::get('description');
-                    $data->status = Input::get('status');
-                    $data->save();
-
-                    // redirect
-                    Session::flash('fl_msg', 'Blog post added successfully!');
-                    return Redirect::to('blog');
-                }
-                 */
+                $data = new Blog;
+                $data->title = $request->input('title');
+                $data->description = $request->input('description');
+                $data->status = $request->input('status');
+                
+                $data->save();
+                
+                // redirect
+                //Session::flash('fl_msg', 'Blog post added successfully!');
+                return Redirect::to('blog');
+                
 	}
 
 	/**
@@ -94,7 +76,8 @@ class BlogController extends Controller {
 	 */
 	public function edit($id)
 	{
-		//
+		$content = Blog::findOrFail($id);
+                return view('blog.edit',compact('content'));
 	}
 
 	/**
