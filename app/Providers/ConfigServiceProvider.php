@@ -1,6 +1,7 @@
 <?php namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Symfony\Component\Finder\Finder;
 
 class ConfigServiceProvider extends ServiceProvider {
 
@@ -14,10 +15,21 @@ class ConfigServiceProvider extends ServiceProvider {
 	 * @return void
 	 */
 	public function register()
-	{
-		config([
-			//
-		]);
-	}
+        {
+            $config = app('config');
+            
+            $envPath = app()->configPath() . '/' . getenv('APP_ENV');
+
+            foreach (Finder::create()->files()->name('*.php')->in($envPath) as $file)
+            {
+                $configName = basename($file->getRealPath(), '.php');
+                $oldConfigValues = $config->get($configName);
+                $newConfigValues = require $file->getRealPath();
+
+                // Replace any matching values in the old config with the new ones.
+                // Doesn't yet handle matching arrays in the config, it will just replace them.
+                $config->set($configName, $newConfigValues + $oldConfigValues);
+            }
+        }
 
 }

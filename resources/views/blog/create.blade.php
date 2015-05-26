@@ -29,7 +29,7 @@
                         <div class="form-group">
                             <label class="col-md-4 control-label">Description</label>
                             <div class="col-md-6">
-                                <input type="text" class="form-control" name="description" value="{{ old('description') }}">
+                                {!! Form::textarea('description', null, ['class' => 'form-control']) !!}
                             </div>
                         </div>
                         
